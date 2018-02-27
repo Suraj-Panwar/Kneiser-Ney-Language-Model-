@@ -1,3 +1,4 @@
+print('Importing Modules --')
 import pandas as pd
 import numpy as np
 import nltk
@@ -10,10 +11,12 @@ from nltk import trigrams
 from nltk import ngrams
 import copy
 
+
+print('Generating train, development, test modules---')
 ###################################################
 # Generate Seed for uniform splitting and corpuses#
 ###################################################
-random.seed(22)
+#random.seed(22)
 
 #Generate Train set for Gutenberg corpus
 guten_train = random.sample(list(gutenberg.fileids()), 12)
@@ -33,7 +36,7 @@ for i, j, k in zip(guten_train, guten_dev, guten_test):
     assert k not in guten_train
 
 #Generating Train set for Brown Corpus
-random.seed(22)
+#random.seed(22)
 brown_train = []
 brown_dev = []
 brown_test = []
@@ -60,6 +63,8 @@ for i,j,k in zip(brown_train, brown_dev, brown_test):
     assert j not in brown_train
     assert k not in brown_train
     assert k not in brown_dev
+
+print('Generating N-grams---')
 
 # Creating unigram models for Gutenberg corpus
 unigram_guten_train = nltk.FreqDist([token.lower() for token in gutenberg.words(fileids = guten_train)])
@@ -153,7 +158,8 @@ def triKNS(trigram, trigram_count, bigram_count, unigram_count):
     else:
         pkn = residue
     return pkn
-    
+
+print('Generating Dictionaries ---')  
 ######################
 #Generating Libraries#
 ######################
@@ -282,15 +288,24 @@ def bicont(trigram, trigram_count, bigram_count, unigram_count):
     
     return pcont, p_lower
 
+print('Generating Random Sentence of 10 tokens---\n ----------------------------------')
+
+del dict_tri['lord', '-', '?' , '``', ':']
+del dict_bi['lord', '-', '?' , '``', ':']
+del dict_uni['lord', '-', '?' , '``', ':']
+del bigram_brown_test['lord', '-', '?' , '``', ':']
+del unigram_guten_test['lord', '-', '?' , '``', ':']
+
 ###############################################
 #Implementing the sentence generation function#
 ###############################################
+
 #bigram_1 = random.sample(bigram_brown_test.keys(), 1)[0]  # Uncomment it for random sentence generation.
 bigram_1= ('this', 'is')                                 # Uncomment it for generating sentence based on starting bigram.
 string = str(bigram_1[0])+str(' ')+str(bigram_1[1])
 
 
-while((len(string.split(' ')) != 10)):
+while((len(string.split(' ')) != 10) and (len(string.split(' ')) != 11) and (len(string.split(' ')) != 9) and (len(string.split(' ')) != 12)):
     string = str(bigram_1[0])+str(' ')+str(bigram_1[1])
     bigram = bigram_1
     while (string[-1] != '.'):
@@ -298,17 +313,21 @@ while((len(string.split(' ')) != 10)):
         #rend = random.sample(unigram_brown_test.keys(), len(unigram_brown_test))
         dict_1 = {}
         #print(bigram)
-        for word in random.sample(dict_uni.keys(), int(len(dict_uni.keys())/3)):
+        for word in random.sample(list(dict_uni), int(len(dict_uni)/3)):
             trigram = (bigram[0],bigram[1], word)
             #print(trigram)
             dict_1[word]= triKNS(trigram, dict_tri, dict_bi, dict_uni) 
 
         word_1 = max(dict_1.keys(), key=lambda k: dict_1[k])
         #print(dict_1[word_1])
-        if dict_1[word_1] > 0.01:
+        if dict_1[word_1] > 0:
             string = string + str(' ')+ str(word_1)
             bigram = (bigram[1], word_1)
 
 print("The random string is: \n",string)
 
+print('\n')
+print('\n')
+print('\n----------------------------------')
+x= input('Press Enter to close')
 
