@@ -309,6 +309,6 @@ while((len(string.split(' ')) != 10)):
             string = string + str(' ')+ str(word_1)
             bigram = (bigram[1], word_1)
 
-print(string)
+print("The random string is: \n",string)
 
 
