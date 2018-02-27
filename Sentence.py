@@ -301,7 +301,7 @@ while((len(string.split(' ')) != 10)):
         for word in random.sample(dict_uni.keys(), int(len(dict_uni.keys())/3)):
             trigram = (bigram[0],bigram[1], word)
             #print(trigram)
-            dict_1[word]= triKNS(trigram, trigram_brown_train, bigram_guten_train, unigram_guten_train) 
+            dict_1[word]= triKNS(trigram, dict_tri, dict_bi, dict_uni) 
 
         word_1 = max(dict_1.keys(), key=lambda k: dict_1[k])
         #print(dict_1[word_1])
