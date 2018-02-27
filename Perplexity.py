@@ -148,6 +148,64 @@ def biKNS(bigram, bigram_count, unigram_count):
         pkn = d/len(unigram_count)
     
     return pkn
+#################################
+#Generating Additional libraries#
+#################################
+trigram_guten_unique = list(dict_tri)
+bigram_guten_unique = list(dict_bi)
+trigram_unique_values = list(dict_tri.values())
+bigram_unique_values = list(dict_bi.values())
+
+bigram_1_2_count ={}
+bigram_1_2_value ={}
+
+bigram_2_3_count ={}
+bigram_2_3_value ={}
+
+unigram_1_count ={}
+unigram_1_value ={}
+
+unigram_2_count ={}
+unigram_2_value ={}
+
+for t,k in zip(trigram_guten_unique, trigram_unique_values):
+    if t[0:2] in bigram_1_2_count:
+        bigram_1_2_count[t[0:2]] += 1
+        bigram_1_2_value[t[0:2]] += k
+    else:
+        bigram_1_2_count[t[0:2]] =1
+        bigram_1_2_value[t[0:2]] = k
+
+for t,k in zip(trigram_guten_unique, trigram_unique_values):
+    if t[1:3] in bigram_2_3_count:
+        bigram_2_3_count[t[1:3]] += 1
+        bigram_2_3_value[t[1:3]] += k
+    else:
+        bigram_2_3_count[t[1:3]] =1
+        bigram_2_3_value[t[1:3]] = k
+        
+for t,k in zip(bigram_guten_unique, bigram_unique_values):
+    if t[0] in unigram_1_count:
+        unigram_1_count[t[0]] += 1
+        unigram_1_value[t[0]] += k
+    else:
+        unigram_1_count[t[0]] =1
+        unigram_1_value[t[0]] = k
+
+for t,k in zip(bigram_guten_unique, bigram_unique_values):
+    if t[1] in unigram_2_count:
+        unigram_2_count[t[1]] += 1
+        unigram_2_value[t[1]] += k
+    else:
+        unigram_2_count[t[1]] =1
+        unigram_2_value[t[1]] = k
+        
+        
+#     bigram_1_2.append(t[0:2])
+#     bigram_2_3.append(t[1:3])
+# for t in bigram_guten_unique:
+#     unigram_1.append(t[0])
+#     unigram_2.append(t[1])
 
 ############################
 #Implementing Trigram Model#
@@ -183,15 +241,15 @@ def bicont(trigram, trigram_count, bigram_count, unigram_count):
     lambda_upper = 0
     lambda_lower = 0
     p_lower = 0
-    for keys, values in trigram_count.items():
+   
         
-        if keys[0:2] == trigram[0:2]:
-            upper = upper +1
-            lower = lower + values
-            p_lower = p_lower + values    
+    if trigram[:2] in bigram_1_2_count:
+        upper = bigram_1_2_count[trigram[:2]]
+        lower = bigram_1_2_value[trigram[:2]]
+        p_lower = bigram_1_2_value[trigram[:2]]  
         
-        if keys[1:3] == trigram[1:3]:
-            upper_1 = upper_1 +1
+    if trigram[1:3] in bigram_2_3_count:
+        upper_1 = bigram_2_3_count[trigram[1:3]]
         #if keys[1] == trigram[1]:
             #lower_1 = lower_1 +1
         
@@ -203,16 +261,15 @@ def bicont(trigram, trigram_count, bigram_count, unigram_count):
             
     uni_count = 0
     
-    for keys, values in bigram_count.items():
         
-        if trigram[1] == keys[0]:
-            lambda_lower = lambda_lower + values
-            lambda_upper = lambda_upper + 1
+    if trigram[1] in unigram_1_count:
+        lambda_lower = unigram_1_value[trigram[1]]
+        lambda_upper = unigram_1_count[trigram[1]]
         
-        if keys[1] == trigram[1]:
-            uni_count = uni_count +1
-            #addition
-            lower_1 = lower_1 +1
+    if trigram[1] in unigram_2_count:
+        uni_count = unigram_2_count[trigram[1]]
+        #addition
+        lower_1 = unigram_2_count[trigram[1]]
             
     if upper_1 > d:
         pcont = (upper_1 - d)/lower_1
