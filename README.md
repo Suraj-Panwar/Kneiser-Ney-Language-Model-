@@ -12,3 +12,5 @@ The repository contains two main files:
 
 In perplexity.py the program upon execution the would ask user for preference for the type of corpus to be used i.e Brown or Gutenberg and/or the no. of iterations the program has to run.
 
+In sentence.py the user can either a completely random sentence or a sentence based on the intitial bigram provided by the user.
+In either case the codeline can be commented or uncommented.
