@@ -285,7 +285,7 @@ def bicont(trigram, trigram_count, bigram_count, unigram_count):
 ###############################################
 #Implementing the sentence generation function#
 ###############################################
-#bigram = random.sample(bigram_brown_test.keys(), 1)[0]  # Uncomment it for random sentence generation.
+#bigram_1 = random.sample(bigram_brown_test.keys(), 1)[0]  # Uncomment it for random sentence generation.
 bigram_1= ('this', 'is')                                 # Uncomment it for generating sentence based on starting bigram.
 string = str(bigram[0])+str(' ')+str(bigram[1])
 
