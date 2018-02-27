@@ -285,51 +285,30 @@ def bicont(trigram, trigram_count, bigram_count, unigram_count):
 ###############################################
 #Implementing the sentence generation function#
 ###############################################
-def sentence(ite):
-    iter_1 = ite
-    unigram = sorted(unigram_guten_test.items(), key=lambda x: x[1])
-    uz =[]
-    for it in unigram[-(2*ite):-1]:
-        uz.append(it[0])
-        
-    ############################   
-    #Enter Starting Bigram Here#
-    ############################
-    
-    bigram = ('he', 'was')
-    string = str(bigram[0])+str(' ')+str(bigram[1])
-    unigram = sorted(unigram_guten_test.items(), key=lambda x: x[1])
-    uz =[]
-    for it in unigram[-(2*ite):-1]:
-        uz.append(it[0])
+#bigram = random.sample(bigram_brown_test.keys(), 1)[0]  # Uncomment it for random sentence generation.
+bigram_1= ('this', 'is')                                 # Uncomment it for generating sentence based on starting bigram.
+string = str(bigram[0])+str(' ')+str(bigram[1])
 
-    for i in range(7):
+
+while((len(string.split(' ')) != 10)):
+    string = str(bigram_1[0])+str(' ')+str(bigram_1[1])
+    bigram = bigram_1
+    while (string[-1] != '.'):
+
+        #rend = random.sample(unigram_brown_test.keys(), len(unigram_brown_test))
         dict_1 = {}
         #print(bigram)
-        for word in random.sample(uz, iter_1):
+        for word in random.sample(dict_uni.keys(), int(len(dict_uni.keys())/3)):
             trigram = (bigram[0],bigram[1], word)
             #print(trigram)
-            dict_1[word]= triKNS(trigram, trigram_guten_train, bigram_guten_train, unigram_guten_train) 
-            
+            dict_1[word]= triKNS(trigram, trigram_brown_train, bigram_guten_train, unigram_guten_train) 
+
         word_1 = max(dict_1.keys(), key=lambda k: dict_1[k])
         #print(dict_1[word_1])
-        string = string + str(' ')+ str(word_1)
-        print(string)
-        bigram = (bigram[1], word_1)
-        
-        if i == 6:
-            for word in random.sample(uz, iter_1):
-                trigram = (word_1, word, '.' )
-                dict_1[word]= triKNS(trigram, trigram_guten_train, bigram_guten_train, unigram_guten_train) 
-            word_1 = max(dict_1.keys(), key=lambda k: dict_1[k])
-            #print(dict_1[word_1])
-            string = string + str(' ')+ str(word_1)+ str(' ')+str('.')
-            print(string)
-    return
+        if dict_1[word_1] > 0.01:
+            string = string + str(' ')+ str(word_1)
+            bigram = (bigram[1], word_1)
 
-###############################
-#Acutal Program Implementation#
-###############################
-ite = int(input('Enter the no. of trigrams for pool of sentence generation'))
+print(string)
 
-sentence(ite)
+
